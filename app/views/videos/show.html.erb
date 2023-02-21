@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @video.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @video.description %>
+</p>
+
+<p>
+  <% if @video.thumbnail.attached? %>
+    <%= image_tag @video.thumbnail %>
+  <% end %>
+</p>
+<p>
+  <% if @video.video.attached? %>
+    <%= video_tag url_for(@video.video), controls: true %>
+  <% end %>
+</p>
+<h2>Comments</h2>
+ <%= form_with(model: @comment, local:true) do |form| %>
+ <div class="field">
+    <%= form.text_area:comment %>
+    <%= form.hidden_field :video_id, :value => @video.id %>
+ </div>
+ <div class="actions">
+     <%= form.submit %>
+ </div>
+ <% end %>
+
+ <ul>
+     <% @video.comment.each do |comment| %>
+     <li>
+         <%= comment.comment %>
+         (<i><%= comment.user.email %></i>)
+     </li>
+     <% end %>
+ </ul>
+<%= link_to 'Edit', edit_video_path(@video) %> |
+<%= link_to 'Back', videos_path %>
